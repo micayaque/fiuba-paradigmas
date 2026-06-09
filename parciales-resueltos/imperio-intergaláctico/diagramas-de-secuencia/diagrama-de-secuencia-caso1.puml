@@ -1,0 +1,51 @@
+@startuml
+!include estilos.puml
+
+actor "Test01" as test
+participant ":Acorazado" as ac
+participant "ataque1\n:BombasDeNeutrones" as atb
+participant "ataque2\n:TorretaIonica" as att
+participant "defensa\n:EscudoIonico" as de
+
+test -> ac: <<create>> inicializar
+activate ac
+
+    ac -> atb: <<create>> BombasDeNeutrones(10)
+    ac -> att: <<create>> TorretaIonica()
+    ac -> de: <<create>> EscudoIonico()
+
+deactivate ac
+
+test -> ac: disparar()
+
+activate ac
+    ac -> atb : disparar()    
+deactivate ac
+
+test -> ac: disparar()
+activate ac
+    ac -> atb : disparar()    
+deactivate ac
+
+test -> ac : puntaje()
+
+activate ac
+    ac -> atb : puntajeBombas = puntaje()
+    activate atb
+        atb --> ac : puntajeBombas = 5*8 = 40
+    deactivate atb
+    ac -> att : puntajeTorreta = puntaje()
+    activate att
+        att --> ac : puntajeTorreta = 100 - 10*2 = 80
+    deactivate att
+    note right of ac
+        puntajeAtaque = puntajeBombas + puntajeTorreta = 120
+    end note
+    ac -> de : puntajeEscudo = puntaje(puntajeAtaque)
+    activate de
+        de --> ac : puntajeEscudo = puntajeAtaque * 2 = 240
+    deactivate de
+    ac --> test : puntajeTotal = puntajeAtaque + puntajeEscudo = 360
+deactivate ac
+
+@enduml
