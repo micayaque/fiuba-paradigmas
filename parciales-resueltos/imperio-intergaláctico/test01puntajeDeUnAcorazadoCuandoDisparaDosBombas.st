@@ -8,7 +8,7 @@ test01puntajeDeUnAcorazadoCuandoDisparaDosBombas
 		acorazado disparar.
 		acorazado disparar.
 				
-		puntajeAcorazado := acorazado puntajeTotal.
+		puntajeAcorazado := acorazado puntaje.
 		
 		"Assert"
         puntajeAtaqueEsperado := 8*5 + 100 - (10*(10-8)).
