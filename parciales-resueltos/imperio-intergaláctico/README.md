@@ -37,7 +37,7 @@ Se pide:
 
 ### 1. Diagrama de clases (**completo**) que representen el modelo descrito.
 
-![Diagrama de clases](diagrama-de-clases.png)
+![Diagrama de clases](/parciales-resueltos/imperio-intergaláctico/src/diagrama-de-clases.png)
 
 ---
 
@@ -47,11 +47,11 @@ Los casos de uso son:
 
 #### 1. Calcular el **puntaje total** de un **Acorazado** nuevo luego de disparar 2 bombas de neutrones.
 
-![Diagrama de secuencia caso de uso 1](/parciales-resueltos/imperio-intergaláctico/diagramas-de-secuencia/diagrama-de-secuencia-caso1.png)
+![Diagrama de secuencia caso de uso 1](/parciales-resueltos/imperio-intergaláctico/src/diagramas-de-secuencia/diagrama-de-secuencia-caso1.png)
 
 #### 2. Calcular el **puntaje total** de una flota con una **Corbeta**, un **Destructor** y un **Acorazado** nuevos.
 
-![Diagrama de secuencia caso de uso 2](/parciales-resueltos/imperio-intergaláctico/diagramas-de-secuencia/diagrama-de-secuencia-caso2.png)
+![Diagrama de secuencia caso de uso 2](/parciales-resueltos/imperio-intergaláctico/src/diagramas-de-secuencia/diagrama-de-secuencia-caso2.png)
 
 ### 3. Código de prueba para cada uno de los casos de uso.
 
