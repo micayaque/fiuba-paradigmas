@@ -1,0 +1,128 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide footbox
+' --- Paleta de colores GitHub Dark ---
+!$bg = "#0f1117"
+!$surface = "#161b22"
+!$border = "#30363d"
+!$text = "#c9d1d9"
+!$keyword_red = "#ff7b72"
+!$class_purple = "#d2a8ff"
+!$method_blue = "#79c0ff"
+!$string_cyan = "#a5d6ff"
+
+' --- Configuración Global ---
+skinparam backgroundColor $bg
+skinparam defaultFontColor $text
+skinparam defaultFontName "Consolas"
+skinparam roundcorner 6
+skinparam shadowing false
+skinparam ArrowFontColor #8899aa
+
+' --- Configuración para Diagramas de Clases ---
+skinparam class {
+    BackgroundColor $surface
+    BorderColor $class_purple
+    FontColor $text
+    ArrowColor $method_blue
+    AttributeFontColor $text
+    MethodFontColor $string_cyan
+    HeaderBackgroundColor $border
+
+}
+
+hide circle
+
+' --- Configuración para Diagramas de Secuencia ---
+skinparam sequence {    
+
+    ArrowColor $method_blue
+    LifeLineBorderColor $class_purple
+    LifeLineBackgroundColor $text
+    ActorBorderColor $class_purple
+    ActorBackgroundColor $border
+
+    ParticipantBackgroundColor $surface
+    ParticipantBorderColor $keyword_red
+    ParticipantFontColor $text
+    GroupBorderColor $border
+    GroupHeaderFontColor $bg
+
+    BoxBackgroundColor $bg
+    BoxBorderColor $border
+''''''''''''''''''''''''''''''''''''''
+    ArrowColor #4f8ef7
+    ActorBorderColor #4f8ef7
+    ActorBackgroundColor #1e2536
+    ActorFontColor #e2e8f0
+    ParticipantBorderColor #2a3347
+    ParticipantBackgroundColor #1e2536
+    ParticipantFontColor #e2e8f0
+    LifeLineBorderColor #2a3347
+    LifeLineBackgroundColor #1e2536
+    BoxBackgroundColor #161b27
+    BoxBorderColor #2a3347
+    BoxFontColor #8899aa
+    DividerBackgroundColor #1e2536
+    DividerBorderColor #2a3347
+    DividerFontColor #a78bfa
+    GroupBackgroundColor #1e2536
+    GroupBorderColor #2a3347
+    GroupFontColor #8899aa
+    GroupBodyBackgroundColor #161b27
+}
+
+skinparam note {
+    BackgroundColor #1e2536
+    BorderColor #a78bfa
+    FontColor #e2e8f0
+}
+
+actor "Test01" as test
+participant ":Acorazado" as ac
+participant "ataque1\n:BombasDeNeutrones" as atb
+participant "ataque2\n:TorretaIonica" as att
+participant "defensa\n:EscudoIonico" as de
+
+test -> ac: <<create>> inicializar
+activate ac
+
+    ac -> atb: <<create>> BombasDeNeutrones(10)
+    ac -> att: <<create>> TorretaIonica()
+    ac -> de: <<create>> EscudoIonico()
+
+deactivate ac
+
+test -> ac: disparar()
+
+activate ac
+    ac -> atb : disparar()    
+deactivate ac
+
+test -> ac: disparar()
+activate ac
+    ac -> atb : disparar()    
+deactivate ac
+
+test -> ac : puntaje()
+
+activate ac
+    ac -> atb : puntajeBombas = puntaje()
+    activate atb
+        atb --> ac : puntajeBombas = 5*8 = 40
+    deactivate atb
+    ac -> att : puntajeTorreta = puntaje()
+    activate att
+        att --> ac : puntajeTorreta = 100 - 10*2 = 80
+    deactivate att
+    note right of ac
+        puntajeAtaque = puntajeBombas + puntajeTorreta = 120
+    end note
+    ac -> de : puntajeEscudo = puntaje(puntajeAtaque)
+    activate de
+        de --> ac : puntajeEscudo = puntajeAtaque * 2 = 240
+    deactivate de
+    ac --> test : puntajeTotal = puntajeAtaque + puntajeEscudo = 360
+deactivate ac
+
+@enduml
