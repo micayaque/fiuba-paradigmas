@@ -1,0 +1,197 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide footbox
+' --- Paleta de colores GitHub Dark ---
+!$bg = "#0f1117"
+!$surface = "#161b22"
+!$border = "#30363d"
+!$text = "#c9d1d9"
+!$keyword_red = "#ff7b72"
+!$class_purple = "#d2a8ff"
+!$method_blue = "#79c0ff"
+!$string_cyan = "#a5d6ff"
+
+' --- Configuración Global ---
+skinparam backgroundColor $bg
+skinparam defaultFontColor $text
+skinparam defaultFontName "Consolas"
+skinparam roundcorner 6
+skinparam shadowing false
+skinparam ArrowFontColor #8899aa
+
+' --- Configuración para Diagramas de Clases ---
+skinparam class {
+    BackgroundColor $surface
+    BorderColor $class_purple
+    FontColor $text
+    ArrowColor $method_blue
+    AttributeFontColor $text
+    MethodFontColor $string_cyan
+    HeaderBackgroundColor $border
+
+}
+
+hide circle
+
+' --- Configuración para Diagramas de Secuencia ---
+skinparam sequence {    
+
+    ArrowColor $method_blue
+    LifeLineBorderColor $class_purple
+    LifeLineBackgroundColor $text
+    ActorBorderColor $class_purple
+    ActorBackgroundColor $border
+
+    ParticipantBackgroundColor $surface
+    ParticipantBorderColor $keyword_red
+    ParticipantFontColor $text
+    GroupBorderColor $border
+    GroupHeaderFontColor $bg
+
+    BoxBackgroundColor $bg
+    BoxBorderColor $border
+''''''''''''''''''''''''''''''''''''''
+    ArrowColor #4f8ef7
+    ActorBorderColor #4f8ef7
+    ActorBackgroundColor #1e2536
+    ActorFontColor #e2e8f0
+    ParticipantBorderColor #2a3347
+    ParticipantBackgroundColor #1e2536
+    ParticipantFontColor #e2e8f0
+    LifeLineBorderColor #2a3347
+    LifeLineBackgroundColor #1e2536
+    BoxBackgroundColor #161b27
+    BoxBorderColor #2a3347
+    BoxFontColor #8899aa
+    DividerBackgroundColor #1e2536
+    DividerBorderColor #2a3347
+    DividerFontColor #a78bfa
+    GroupBackgroundColor #1e2536
+    GroupBorderColor #2a3347
+    GroupFontColor #8899aa
+    GroupBodyBackgroundColor #161b27
+}
+
+skinparam note {
+    BackgroundColor #1e2536
+    BorderColor #a78bfa
+    FontColor #e2e8f0
+}
+
+actor "Test02" as test
+
+participant ":Flota" as flota
+
+participant ":Acorazado" as ac
+participant "ataqueA1\n:BombasDeNeutrones" as atb
+participant "ataqueA2\n:TorretaIonica" as att
+participant "defensaA\n:EscudoIonico" as deA
+
+participant ":Corbeta" as co
+participant "ataqueC\n:Misiles" as atc
+participant "defensaC\n:EscudoSimple" as deC
+
+participant ":Destructor" as de
+participant "ataqueD\n:Misiles" as atd
+participant "defensaD\n:EscudoFenix" as deD
+
+test -> ac **: <<create>> inicializar
+activate ac
+
+    ac -> atb **: <<create>> BombasDeNeutrones(10)
+    ac -> att **: <<create>> TorretaIonica()
+    ac -> deA **: <<create>> EscudoIonico()
+
+deactivate ac
+
+test -> co **: <<create>> inicializar
+activate co
+
+    co -> atc **: <<create>> Misiles(3)
+    co -> deC **: <<create>> EscudoSimple()
+
+deactivate co
+
+test -> de **: <<create>> inicializar
+activate de
+
+    de -> atd **: <<create>> Misiles(5)
+    de -> deD **: <<create>> EscudoFenix()
+
+deactivate de
+
+
+test -> flota **: <<create>> inicializarConNaves: {acorazado. corbeta. destructor}.
+
+test -> flota : puntajeTotal()
+activate flota
+
+flota -> ac : puntaje()
+activate ac
+    ac -> atb : puntajeBombas = puntaje()
+    activate atb
+        atb --> ac : puntajeBombas = 5*10 = 50
+    deactivate atb
+    ac -> att : puntajeTorreta = puntaje()
+    activate att
+        att --> ac : puntajeTorreta = 100 - 10*0 = 100
+    deactivate att
+    note right of ac
+        puntajeAtaqueAcorazado = puntajeBombas + puntajeTorreta = 150
+    end note
+    ac -> deA : puntajeEscudoAcorazado = puntaje(puntajeAtaqueAcorazado)
+    activate deA
+        deA --> ac : puntajeEscudoAcorazado = puntajeAtaqueAcorazado * 2 = 300
+    deactivate deA
+    ac --> flota : puntajeAcorazado = puntajeAtaqueAcorazado + puntajeEscudoAcorazado = 450
+deactivate ac
+
+note right of flota
+    puntajeFlota = puntajeAcorazado = 450
+end note
+
+flota -> co : puntaje()
+activate co
+    co -> atc : puntajeMisiles = puntaje()
+    activate atc
+        atc --> co : puntajeMisiles = 10*3 = 30
+    deactivate atc
+    co -> deC : puntajeEscudoCorbeta = puntaje()
+    activate deC
+        deC --> co : puntajeEscudoCorbeta = 20 - 0*10 = 20
+    deactivate deC
+    note right of co
+        puntajeCorbeta = puntajeMisiles + puntajeEscudoCorbeta = 50
+    end note
+    co --> flota : puntajeCorbeta = 50
+    deactivate co
+
+note right of flota
+    puntajeFlota = puntajeAcorazado + puntajeCorbeta = 500
+end note
+
+flota -> de : puntaje()
+activate de
+    de -> atd : puntajeMisiles = puntaje()
+    activate atd
+        atd --> de : puntajeMisiles = 10*5 = 50
+        atd -> atd : sumar20(puntajeMisiles)
+        atd --> atd : puntajeMisiles = 50 + 20 = 70
+    deactivate atd
+    de -> deD : puntajeEscudoDestructor = puntaje()
+    activate deD
+        deD --> de : puntajeEscudoDestructor = 50
+    deactivate deD
+    note right of de
+        puntajeDestructor = puntajeMisiles + puntajeEscudoDestructor = 120
+    end note
+    de --> flota : puntajeDestructor = 120
+deactivate de
+
+note right of flota
+    puntajeFlota = puntajeAcorazado + puntajeCorbeta + puntajeDestructor = 570
+end note
+deactivate flota
+flota --> test : puntajeTotal = 570
+
+@enduml
