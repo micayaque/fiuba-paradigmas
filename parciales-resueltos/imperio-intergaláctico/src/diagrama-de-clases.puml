@@ -1,0 +1,118 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' --- Paleta de colores GitHub Dark ---
+!$bg = "#0f1117"
+!$surface = "#161b22"
+!$border = "#30363d"
+!$text = "#c9d1d9"
+!$keyword_red = "#ff7b72"
+!$class_purple = "#d2a8ff"
+!$method_blue = "#79c0ff"
+!$string_cyan = "#a5d6ff"
+
+' --- Configuración Global ---
+skinparam backgroundColor $bg
+skinparam defaultFontColor $text
+skinparam defaultFontName "Consolas"
+skinparam roundcorner 6
+skinparam shadowing false
+skinparam ArrowFontColor #8899aa
+
+' --- Configuración para Diagramas de Clases ---
+skinparam class {
+    BackgroundColor $surface
+    BorderColor $class_purple
+    FontColor $text
+    ArrowColor $method_blue
+    AttributeFontColor $text
+    MethodFontColor $string_cyan
+    HeaderBackgroundColor $border
+}
+
+hide circle
+
+abstract class Nave {
+    - ataque : Ataque
+    + {abstract} puntaje()
+}
+
+class Corbeta {
+    - escudo : EscudoSimple
+    + disparar()
+    + recibirAtaque()
+}
+
+class EscudoSimple {
+    - puntosPorDanio : Number
+}
+
+class Destructor {
+    - escudo : EscudoFenix
+    - estadoConCincoMisiles : Boolean
+    + disparar()
+    + recibirAtaque()
+    + sumarPuntosExtra()
+}
+
+class EscudoFenix {
+    - estaDestruido : Boolean
+}
+
+class Acorazado {
+    - escudo : EscudoIonico
+    - torreta : TorretaIonica
+    - bombasDeNeutrones : Number
+    - torretaIonicaActiva : Boolean
+    + disparar()
+    + recibirAtaque()
+}
+
+class Ataque {
+    - cantidadDisparos : Number
+    - puntosPorDisparo : Number
+    + disparar()
+    + puntaje() : Number
+}
+
+class TorretaIonica {
+    - puntos : Number
+    - estadoSuma : Boolean
+    - bombasGastadas : Number
+    + puntaje() : Number
+}
+
+class EscudoIonico {
+    + puntaje(Number: puntaje) : Number
+}
+
+class Flota {
+    + puntajeTotal() : Number
+}
+
+abstract class EscudoAtacable {
+    - puntos : Number
+    + recibirDanio()
+    + puntaje() : Number
+}
+
+EscudoAtacable <|-- EscudoSimple
+EscudoAtacable <|-- EscudoFenix
+
+Flota o-- "*" Nave
+
+Nave <|-- Acorazado
+
+Acorazado o-- Ataque
+
+Acorazado o-- TorretaIonica
+Acorazado o-- EscudoIonico
+
+Nave <|-- Destructor
+Destructor o-- Ataque
+Destructor o-- EscudoFenix
+
+Corbeta o-- Ataque
+Corbeta o-- EscudoSimple
+Nave <|-- Corbeta
+@enduml
