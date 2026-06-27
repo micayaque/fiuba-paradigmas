@@ -1,0 +1,52 @@
+!include estilos.puml
+
+class Espacio {
+
+}
+
+interface ObjetoMovil {
+}
+
+class Posicion {
+    + estaDentroDe() : boolean
+    + distanciaHasta(pos: Posicion): float
+}
+
+class Movimiento {
+    + calcularPosSiguiente(): Posicion
+}
+
+class MovLineaRecta {
+
+}
+
+class MovChocarNave {
+
+}
+
+class Direccion {
+    + desplazarPos(Posicion: int): Posicion
+    + disOpuesta(): Direccion
+}
+
+class DirArriba {
+
+}
+
+class DirAbajo {
+
+}
+
+Espacio *- ObjetoMovil
+
+ObjetoMovil *-- Movimiento
+
+Movimiento <|-- MovLineaRecta
+Movimiento <|-- MovChocarNave
+
+ObjetoMovil *- Posicion
+
+Movimiento *- Direccion
+
+Direccion <|-- DirArriba
+Direccion <|-- DirAbajo

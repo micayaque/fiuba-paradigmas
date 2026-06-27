@@ -1,0 +1,22 @@
+!include estilos.puml
+
+class Funcion {
+    expresion: String
+    arbol: Arbol    
+    calcular(x: float) : float
+    calcular(x: float[]) : float[]
+}
+
+class Parser {
+    parsear(expresion: String) : Arbol
+}
+
+class Arbol {
+    getValor() : String
+    getIzquierda() : Arbol
+    getDerecha() : Arbol
+}
+
+Funcion "1" --> "1" Parser
+Funcion "1" *- "1" Arbol
+Parser -> "1" Arbol

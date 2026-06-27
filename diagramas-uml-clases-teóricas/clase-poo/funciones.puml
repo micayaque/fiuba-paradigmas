@@ -1,0 +1,33 @@
+!include estilos.puml
+
+abstract class Funcion {
+    calcular(x: float)
+    calcular(x: float[]) : float[]
+}
+
+class Parser {
+    parsear(expresion: String) : Funcion
+}
+
+class Suma {
+    Suma(f1: Funcion, f2: Funcion) : void
+}
+
+class Ln {
+    Ln(f: Funcion) : void
+}
+
+class X {
+    X() : void
+}
+
+class Constante {
+    Constante(valor: float) : void
+}
+
+Funcion <|-- Suma
+Funcion <|-- Ln
+Funcion <|-- X
+Funcion <|-- Constante
+
+Funcion "1" <- "1" Parser 

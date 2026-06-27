@@ -1,0 +1,46 @@
+!include estilos.puml
+
+class Valor {
+    valor: float
+    valor(f: float) : void
+    asFloat() : float
+    equals(v: Valor) : boolean
+    compareTo(v: Valor) : int
+}
+
+class Punto {
+    x: Valor
+    y: Valor
+    Punto(x: Valor, y: Valor) : void
+    getX() : Valor
+    getY() : Valor
+}
+
+class Intervalo {
+    punto1: Punto
+    punto2: Punto
+    iterator() : Iterator
+}
+
+class Evaluacion {
+    p: Punto
+    v: Valor
+    getPunto() : Punto
+    getValor() : Valor
+}
+
+class IntervaloDisjunto {
+    intervalos: List
+}
+
+Valor "1" -* "1" Punto
+
+Valor "1" --* "1" Evaluacion
+
+Punto "1" -* "1" Intervalo
+
+Punto "1" --* "1" Evaluacion
+
+Intervalo "1" --* "1" IntervaloDisjunto
+
+Intervalo <|-- IntervaloDisjunto
