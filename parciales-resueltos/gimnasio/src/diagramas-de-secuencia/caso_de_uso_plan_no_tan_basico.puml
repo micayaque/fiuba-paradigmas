@@ -1,0 +1,37 @@
+@startuml
+
+!include estilos.puml
+
+title Caso de uso: Un socio con plan no tan básico quiere reservar la sala de musculación
+
+actor test as "Test01"
+
+participant socio as "socio:Socio"
+participant plan as "plan:NoTanBasico"
+participant gimnasio as ":Gimnasio"
+participant agenda as ":AgendaGimnasio"
+
+test -> agenda ** : AgendaGimnasio()
+test -> gimnasio ** : Gimnasio(agenda)
+
+test -> plan ** : PlanNoTanBasico()
+test -> socio ** : Socio(plan)
+test -> gimnasio : agregarSocio(socio)
+
+test -> socio : reservarSalaMusculacion()
+activate socio
+socio -> plan : reservarSalaMusculacion(socio)
+activate plan
+plan -> agenda : cuantasVecesReservadasASalaMusculacion(socio)
+activate agenda
+agenda --> plan : 0
+deactivate agenda
+
+plan -> plan : verificarMaximoDeReservasASalaMusculacion(0)
+activate plan
+deactivate plan
+plan -> agenda : reservarSalaMusculacion(socio)
+deactivate plan
+deactivate socio
+
+@enduml
