@@ -1,0 +1,37 @@
+!include estilos.puml
+
+class Espacio {
+
+}
+
+interface ObjetoMovil {
+    + mover() : void
+    + getX() : int
+    + getY() : int
+}
+
+class NaveJugador {
+    - x: int
+    - y: int
+    - direccion : int
+    + mover() : void
+}
+
+class NaveEnemiga {
+    - x: int
+    - y: int
+    - direccion: int
+    + mover() : void
+}
+
+class Misil {
+    - x: int
+    - y: int
+    + mover() : void
+}
+
+Espacio *- ObjetoMovil
+
+ObjetoMovil <|.. NaveJugador
+ObjetoMovil <|.. NaveEnemiga
+ObjetoMovil <|.. Misil
