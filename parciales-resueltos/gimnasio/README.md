@@ -24,7 +24,88 @@
 
 ### Modelar en UML (diagrama de clases) el dominio recién descrito. Use nombres adecuados para todas las clases, métodos y asociaciones que defina. Incluya todos los métodos que le parezca necesarios en las clases, pero ninguno más. Los métodos que utilice en los puntos B.a y B.b deben figurar en el diagrama.
 
-![Diagrama de clases](/parciales-resueltos/gimnasio/src/diagrama_de_clases.png)
+```mermaid
+
+classDiagram
+    class Gimnasio {
+        +Gimnasio() void
+        +agregarSocio(socio: Socio) void
+    }
+
+    class Plan {
+        <<abstract>>
+        +Plan(maxClasesPorSemana: int, maxReservasASalaMusculacionPorSemana: int) void
+        +verificarMaximoDeReservas(cantidadDeReservas: int) void*
+        +reservarSalaMusculacion(socio: Socio) void*
+    }
+
+    class Basico {
+        -maxClasesPorSemana: int
+        -maxReservasASalaMusculacionPorSemana: int
+    }
+
+    class NoTanBasico {
+        -maxClasesPorSemana: int
+        -maxReservasASalaMusculacionPorSemana: int
+    }
+
+    class Libre
+
+    class FanDeLasClases {
+        -maxReservasASalaMusculacionPorSemana: int
+    }
+
+    class Suscripcion {
+        <<abstract>>
+    }
+
+    class Mensual
+    class Anual
+
+    class Precio
+    class FormaDePago
+
+    class Socio {
+        -plan: Plan
+        +Socio(plan: Plan) void
+        +reservarClase() void
+        +reservarSalaMusculacion() void
+    }
+
+    class AgendaGimnasio {
+        +cuantasClasesReservadasEstaSemana(unSocio: Socio) int
+        +cuantasVecesReservadasASalaMusculacion(unSocio: Socio) int
+    }
+
+    class LimiteDeReservasAlcanzadoExcepcion
+    class Error
+
+    %% --- Relaciones ---
+
+    Plan ..> LimiteDeReservasAlcanzadoExcepcion
+
+    Suscripcion o-- FormaDePago
+    Suscripcion o-- Precio
+
+    Gimnasio "1" o-- "*" Socio
+
+    Socio o-- Plan
+
+    Plan *-- Suscripcion
+
+    Plan ..> AgendaGimnasio
+
+    Plan <|-- Basico
+    Plan <|-- NoTanBasico
+    Plan <|-- Libre
+    Plan <|-- FanDeLasClases
+
+    Suscripcion <|-- Mensual
+    Suscripcion <|-- Anual
+
+    Error <|-- LimiteDeReservasAlcanzadoExcepcion
+```
+
 
 ---
 
