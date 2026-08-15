@@ -25,8 +25,30 @@
 ### Modelar en UML (diagrama de clases) el dominio recién descrito. Use nombres adecuados para todas las clases, métodos y asociaciones que defina. Incluya todos los métodos que le parezca necesarios en las clases, pero ninguno más. Los métodos que utilice en los puntos B.a y B.b deben figurar en el diagrama.
 
 ```mermaid
-
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#0f1117",
+    "primaryColor": "#161b22",
+    "primaryBorderColor": "#d2a8ff",
+    "primaryTextColor": "#c9d1d9",
+    "secondaryColor": "#161b22",
+    "tertiaryColor": "#30363d",
+    "lineColor": "#79c0ff",
+    "textColor": "#c9d1d9",
+    "classText": "#c9d1d9",
+    "mainBkg": "#161b22",
+    "nodeBorder": "#d2a8ff",
+    "clusterBkg": "#161b22",
+    "clusterBorder": "#30363d",
+    "titleColor": "#c9d1d9",
+    "edgeLabelBackground": "#0f1117",
+    "fontFamily": "Consolas, monospace"
+  }
+}}%%
 classDiagram
+    title Diagrama de clases del sistema de reservas del gimnasio
+
     class Gimnasio {
         +Gimnasio() void
         +agregarSocio(socio: Socio) void
@@ -112,11 +134,160 @@ classDiagram
 ### Modelar en UML (diagrama de secuencia, con objetos y mensajes) el caso completo para los siguientes escenarios:
 * ### Un socio con plan **NoTanBasico** quiere reservar la sala de musculación.
 
-![Diagrama de secuencia 1](/parciales-resueltos/gimnasio/src/diagramas-de-secuencia/caso_de_uso_plan_no_tan_basico.png)
+```mermaid
+
+%%{init: {
+    "mirrorActors": false,
+    "theme": "base",
+    "themeVariables": {
+    "background": "#0f1117",
+    "actorBkg": "#1e2536",
+    "actorBorder": "#4f8ef7",
+    "actorTextColor": "#e2e8f0",
+    "actorLineColor": "#2a3347",
+    "signalColor": "#4f8ef7",
+    "signalTextColor": "#e2e8f0",
+    "labelBoxBkgColor": "#1e2536",
+    "labelBoxBorderColor": "#2a3347",
+    "labelTextColor": "#8899aa",
+    "loopTextColor": "#8899aa",
+    "noteBkgColor": "#1e2536",
+    "noteBorderColor": "#a78bfa",
+    "noteTextColor": "#e2e8f0",
+    "activationBorderColor": "#4f8ef7",
+    "activationBkgColor": "#2a3347"
+  }
+}}%%
+sequenceDiagram
+    title Caso de uso: Un socio con plan no tan básico quiere reservar la sala de musculación
+
+    actor test as Test01
+
+    create participant agenda as :AgendaGimnasio
+    test ->> agenda: AgendaGimnasio()
+
+    create participant gimnasio as :Gimnasio
+    test ->> gimnasio: Gimnasio(agenda)
+
+    create participant plan as plan:NoTanBasico
+    test ->> plan: PlanNoTanBasico()
+
+    create participant socio as socio:Socio
+    test ->> socio: Socio(plan)
+
+    test ->> gimnasio: agregarSocio(socio)
+
+    test ->> socio: reservarSalaMusculacion()
+    activate socio
+    socio ->> plan: reservarSalaMusculacion(socio)
+    activate plan
+    plan ->> agenda: cuantasVecesReservadasASalaMusculacion(socio)
+    activate agenda
+    agenda -->> plan: 0
+    deactivate agenda
+
+    plan ->> plan: verificarMaximoDeReservasASalaMusculacion(0)
+    activate plan
+    deactivate plan
+    plan ->> agenda: reservarSalaMusculacion(socio)
+    deactivate plan
+    deactivate socio
+```
 
 * ### Un socio con el plan **FanDeLasClases** quiere usar la sala de musculación, pero ya la ha usado 2 veces esa semana.
 
-![Diagrama de secuencia 1](/parciales-resueltos/gimnasio/src/diagramas-de-secuencia/caso_de_uso_plan_fan_de_las_clases_llega_al_maximo_reserva.png)
+```mermaid
+%%{init: {
+    "mirrorActors": false,
+  "theme": "base",
+  "themeVariables": {
+    "background": "#0f1117",
+    "actorBkg": "#1e2536",
+    "actorBorder": "#4f8ef7",
+    "actorTextColor": "#e2e8f0",
+    "actorLineColor": "#2a3347",
+    "signalColor": "#4f8ef7",
+    "signalTextColor": "#e2e8f0",
+    "labelBoxBkgColor": "#1e2536",
+    "labelBoxBorderColor": "#2a3347",
+    "labelTextColor": "#8899aa",
+    "loopTextColor": "#8899aa",
+    "noteBkgColor": "#1e2536",
+    "noteBorderColor": "#a78bfa",
+    "noteTextColor": "#e2e8f0",
+    "activationBorderColor": "#4f8ef7",
+    "activationBkgColor": "#2a3347"
+  }
+}}%%
+sequenceDiagram
+    title Caso de uso: Un socio con plan fan de las clases quiere reservar la sala de musculación pero ya llegó a su límite
+
+    actor test as Test02
+
+    create participant agenda as :AgendaGimnasio
+    test ->> agenda: AgendaGimnasio()
+
+    create participant gimnasio as :Gimnasio
+    test ->> gimnasio: Gimnasio(agenda)
+
+    create participant plan as plan:FanDeLasClases
+    test ->> plan: PlanFanDeLasClases()
+
+    create participant socio as socio:Socio
+    test ->> socio: Socio(plan)
+
+    test ->> gimnasio: agregarSocio(socio)
+
+    test ->> socio: reservarSalaMusculacion()
+    activate socio
+    socio ->> plan: reservarSalaMusculacion(socio)
+    activate plan
+    plan ->> agenda: cuantasVecesReservadasASalaMusculacion(socio)
+    activate agenda
+    agenda -->> plan: 0
+    deactivate agenda
+
+    plan ->> plan: verificarMaximoDeReservasASalaMusculacion(0)
+    activate plan
+    deactivate plan
+    plan ->> agenda: reservarSalaMusculacion(socio)
+    deactivate plan
+    deactivate socio
+
+    test ->> socio: reservarSalaMusculacion()
+    activate socio
+    socio ->> plan: reservarSalaMusculacion(socio)
+    activate plan
+    plan ->> agenda: cuantasVecesReservadasASalaMusculacion(socio)
+    activate agenda
+    agenda -->> plan: 1
+    deactivate agenda
+
+    plan ->> plan: verificarMaximoDeReservasASalaMusculacion(1)
+    activate plan
+    deactivate plan
+    plan ->> agenda: reservarSalaMusculacion(socio)
+    deactivate plan
+    deactivate socio
+
+    test ->> socio: reservarSalaMusculacion()
+    activate socio
+    socio ->> plan: reservarSalaMusculacion(socio)
+    activate plan
+    plan ->> agenda: cuantasVecesReservadasASalaMusculacion(socio)
+    activate agenda
+    agenda -->> plan: 2
+    deactivate agenda
+
+    plan ->> plan: verificarMaximoDeReservasASalaMusculacion(2)
+    activate plan
+    create participant excepcion as :LimiteDeReservasAlcanzadoExcepcion
+    plan ->> excepcion: LimiteDeReservasAlcanzadoExcepcion()
+    deactivate plan
+    deactivate plan
+
+    deactivate socio
+```
 
 > **IMPORTANTE**
 > En cada diagrama de secuencia mostrar la inicialización de los objetos involucrados
